@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Network — Exam Notes by Ankit</title>
+<style>
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f4;
+    --bg-tertiary: #eeece8;
+    --border: #e0ddd6;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6860;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1c1c1a;
+      --bg-secondary: #252522;
+      --bg-tertiary: #2e2e2b;
+      --border: #3a3a36;
+      --text-primary: #e8e6e0;
+      --text-secondary: #9a9890;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  /* ── Section accordion ── */
+  .sec { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1rem; overflow: hidden; }
+  .sh { padding: .75rem 1rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .sh:hover { background: var(--bg-secondary); }
+  .st { font-size: 15px; font-weight: 500; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+  .sb { padding: 0 1rem 1rem; display: none; }
+  .sb.open { display: block; }
+  .chev { transition: transform .2s; font-size: 18px; color: var(--text-secondary); }
+  .chev.open { transform: rotate(180deg); }
+  /* ── Badge ── */
+  .badge { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+  .b-blue   { background: #E6F1FB; color: #0C447C; }
+  .b-purple { background: #EEEDFE; color: #3C3489; }
+  .b-teal   { background: #E1F5EE; color: #085041; }
+  .b-amber  { background: #FAEEDA; color: #633806; }
+  .b-coral  { background: #FAECE7; color: #712B13; }
+  .b-green  { background: #EAF3DE; color: #27500A; }
+  .b-pink   { background: #FBEAF0; color: #72243E; }
+  .b-red    { background: #FCEBEB; color: #791F1F; }
+  .b-gray   { background: #F1EFE8; color: #444441; }
+  .b-indigo { background: #EAECFE; color: #2D3282; }
+  @media (prefers-color-scheme: dark) {
+    .b-blue   { background: #042C53; color: #B5D4F4; }
+    .b-purple { background: #26215C; color: #CECBF6; }
+    .b-teal   { background: #04342C; color: #9FE1CB; }
+    .b-amber  { background: #412402; color: #FAC775; }
+    .b-coral  { background: #4A1B0C; color: #F5C4B3; }
+    .b-green  { background: #173404; color: #C0DD97; }
+    .b-pink   { background: #4B1528; color: #F4C0D1; }
+    .b-red    { background: #501313; color: #F7C1C1; }
+    .b-gray   { background: #2C2C2A; color: #B4B2A9; }
+    .b-indigo { background: #1A1D50; color: #BBBFF7; }
+  }
+  /* ── Callout boxes ── */
+  .trick { background: #FEFBF2; border-left: 3px solid #EF9F27; padding: .6rem .85rem; margin: .5rem 0; font-size: 13px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .trick b { color: #633806; }
+  .info  { background: #F0F7FE; border-left: 3px solid #378ADD; padding: .6rem .85rem; margin: .5rem 0; font-size: 13px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .info b { color: #042C53; }
+  .warn  { background: #FEF2F2; border-left: 3px solid #E24B4A; padding: .5rem .85rem; margin: .4rem 0; font-size: 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .warn b { color: #791F1F; }
+  .ok    { background: #F2F9EA; border-left: 3px solid #639922; padding: .5rem .85rem; margin: .4rem 0; font-size: 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .ok b  { color: #27500A; }
+  @media (prefers-color-scheme: dark) {
+    .trick { background: rgba(239,159,39,.08); }
+    .trick b { color: #FAC775; }
+    .info  { background: rgba(55,138,221,.08); }
+    .info b { color: #B5D4F4; }
+    .warn  { background: rgba(226,75,74,.08); }
+    .warn b { color: #F7C1C1; }
+    .ok    { background: rgba(99,153,34,.08); }
+    .ok b  { color: #C0DD97; }
+  }
+  /* ── Typography ── */
+  h2 { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin: .75rem 0 .3rem; }
+  h4 { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin: .5rem 0 .2rem; }
+  p, li { font-size: 13px; color: var(--text-primary); line-height: 1.65; }
+  ul { padding-left: 1.2rem; margin: .3rem 0; }
+  li { margin-bottom: 2px; }
+  /* ── Grid layouts ── */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: .5rem 0; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: .5rem 0; }
+  .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: .5rem 0; }
+  @media (max-width: 600px) {
+    .g3, .g4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  }
+  /* ── Cards ── */
+  .card { background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: .5rem .75rem; }
+  .card .lbl { font-size: 11px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+  .pcard { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: .65rem .85rem; margin: .4rem 0; }
+  .ptitle { font-size: 13px; font-weight: 600; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+  /* ── Tags ── */
+  .tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 20px; margin: 1px 2px; font-weight: 500; }
+  .t-blue   { background: #E6F1FB; color: #0C447C; }
+  .t-green  { background: #EAF3DE; color: #27500A; }
+  .t-red    { background: #FCEBEB; color: #791F1F; }
+  .t-amber  { background: #FAEEDA; color: #633806; }
+  .t-purple { background: #EEEDFE; color: #3C3489; }
+  .t-teal   { background: #E1F5EE; color: #085041; }
+  .t-pink   { background: #FBEAF0; color: #72243E; }
+  .t-coral  { background: #FAECE7; color: #712B13; }
+  .t-gray   { background: #F1EFE8; color: #444441; }
+  .t-indigo { background: #EAECFE; color: #2D3282; }
+  @media (prefers-color-scheme: dark) {
+    .t-blue   { background: #042C53; color: #B5D4F4; }
+    .t-green  { background: #173404; color: #C0DD97; }
+    .t-red    { background: #501313; color: #F7C1C1; }
+    .t-amber  { background: #412402; color: #FAC775; }
+    .t-purple { background: #26215C; color: #CECBF6; }
+    .t-teal   { background: #04342C; color: #9FE1CB; }
+    .t-pink   { background: #4B1528; color: #F4C0D1; }
+    .t-coral  { background: #4A1B0C; color: #F5C4B3; }
+    .t-gray   { background: #2C2C2A; color: #B4B2A9; }
+    .t-indigo { background: #1A1D50; color: #BBBFF7; }
+  }
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin: .5rem 0; }
+  th { background: var(--bg-secondary); font-weight: 600; padding: 6px 8px; text-align: left; border: 0.5px solid var(--border); color: var(--text-secondary); font-size: 11px; }
+  td { padding: 5px 8px; border: 0.5px solid var(--border); vertical-align: top; }
+  /* ── Formula box ── */
+  .formula { background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: .45rem .75rem; font-family: var(--font-mono); font-size: 12px; margin: .35rem 0; color: var(--text-primary); }
+  /* ── Divider ── */
+  .dv { border: none; border-top: 0.5px solid var(--border); margin: .65rem 0; }
+  /* ── Colours ── */
+  .pro { color: #27500A; font-size: 12px; margin-bottom: 2px; }
+  .con { color: #791F1F; font-size: 12px; margin-bottom: 2px; }
+  @media (prefers-color-scheme: dark) {
+    .pro { color: #C0DD97; }
+    .con { color: #F7C1C1; }
+  }
+  /* ── Port pills ── */
+  .port-row { display: flex; flex-wrap: wrap; gap: 5px; margin: .4rem 0; }
+  .port { display: flex; align-items: center; gap: 6px; background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 4px 10px; font-size: 12px; }
+  .port-num { font-family: var(--font-mono); font-weight: 600; font-size: 13px; padding: 1px 6px; border-radius: var(--radius-sm); }
+  /* ── Flow ── */
+  .flow { display: flex; flex-direction: column; gap: 3px; margin: .5rem 0; }
+  .fstep { display: flex; align-items: center; gap: 8px; font-size: 12px; flex-wrap: wrap; }
+  .fbox { padding: 4px 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; }
+  .farrow { color: var(--text-secondary); font-size: 12px; }
+  /* ── TCP header grid ── */
+  .hf { padding: 5px 8px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 500; text-align: center; border: 0.5px solid var(--border); }
+  .tcp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin: .5rem 0; }
+  /* ── DORA boxes ── */
+  .dora-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: flex-start; margin: .5rem 0; }
+  .dora-box { flex: 1; min-width: 110px; text-align: center; }
+  .dora-label { padding: 8px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; }
+  .dora-desc { font-size: 11px; margin-top: 3px; color: var(--text-secondary); }
+  /* ── DNS tree ── */
+  .dns-tree { font-size: 12px; font-family: var(--font-mono); line-height: 1.8; padding: .5rem .75rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin: .4rem 0; white-space: pre; overflow-x: auto; }
+  /* ── URL anatomy ── */
+  .url-box { padding: .6rem .75rem; background: var(--bg-secondary); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 13px; overflow-x: auto; margin: .5rem 0; white-space: nowrap; }
+  /* ── Frame display ── */
+  .frame-row { display: flex; gap: 3px; flex-wrap: wrap; margin: .5rem 0; align-items: stretch; }
+  .frame-cell { flex: 1; min-width: 70px; text-align: center; padding: 6px 4px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 500; }
+  /* Print */
+  @media print {
+    body { padding: .5rem; }
+    .sec { break-inside: avoid; }
+    .sb { display: block !important; }
+    .chev { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div style="padding:.5rem 0 1.25rem">
+  <h2>Transport &amp; Application Layers — Exam Notes</h2>
+  <p style="font-size:13px;color:var(--text-secondary);margin-top:4px">
+    Process-to-Process · UDP · TCP · FTP · SMTP · Telnet · HTTP · DNS · DHCP · BOOTP &nbsp;|&nbsp;
+    <span style="background:#FAEEDA;color:#633806;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:500">Amber = memory tricks</span> &nbsp;
+    <span style="background:#E6F1FB;color:#0C447C;padding:1px 6px;border-radius:4px;font-size:11px;font-weight:500">Blue = key formulas</span>
+  </p>
+</div>
+
+<!-- ═══ SECTION 1 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-blue">01</span> Process-to-Process Delivery &amp; Client-Server Paradigm</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <h3>Delivery Types in TCP/IP</h3>
+    <div class="g3">
+      <div class="card" style="border-top:2px solid #378ADD">
+        <div class="lbl">Node-to-Node (Layer 2)</div>
+        <p style="font-size:12px">Data Link Layer. Between two directly connected devices. Uses <b>MAC address</b>.</p>
+      </div>
+      <div class="card" style="border-top:2px solid #1D9E75">
+        <div class="lbl">Host-to-Host (Layer 3)</div>
+        <p style="font-size:12px">Network Layer. Between source and destination machines. Uses <b>IP address</b>.</p>
+      </div>
+      <div class="card" style="border-top:2px solid #BA7517">
+        <div class="lbl">Process-to-Process (Layer 4)</div>
+        <p style="font-size:12px">Transport Layer. Between specific running apps on two hosts. Uses <b>port numbers</b>.</p>
+      </div>
+    </div>
+    <div class="trick"><b>🧠 Address at each layer — "My Interface Port"</b><br>
+    <b>M</b>AC (Layer 2) &nbsp;·&nbsp; <b>I</b>P (Layer 3) &nbsp;·&nbsp; <b>P</b>ort (Layer 4)</div>
+
+    <h3>Port Number Ranges</h3>
+    <div class="g3">
+      <div class="card">
+        <div class="lbl">Well-Known Ports</div>
+        <div style="font-size:13px;font-weight:600">0 – 1023</div>
+        <p style="font-size:12px">IANA-assigned. HTTP=80, FTP=21, SMTP=25…</p>
+      </div>
+      <div class="card">
+        <div class="lbl">Registered Ports</div>
+        <div style="font-size:13px;font-weight:600">1024 – 49151</div>
+        <p style="font-size:12px">App-specific. MySQL=3306, RDP=3389…</p>
+      </div>
+      <div class="card">
+        <div class="lbl">Dynamic / Ephemeral</div>
+        <div style="font-size:13px;font-weight:600">49152 – 65535</div>
+        <p style="font-size:12px">OS-assigned to client processes temporarily.</p>
+      </div>
+    </div>
+
+    <h3>All Important Port Numbers</h3>
+    <div class="port-row">
+      <div class="port"><span class="port-num t-blue">20/21</span> FTP Data/Control</div>
+      <div class="port"><span class="port-num t-teal">22</span> SSH</div>
+      <div class="port"><span class="port-num t-amber">23</span> Telnet</div>
+      <div class="port"><span class="port-num t-red">25</span> SMTP</div>
+      <div class="port"><span class="port-num t-purple">53</span> DNS</div>
+      <div class="port"><span class="port-num t-coral">67/68</span> DHCP</div>
+      <div class="port"><span class="port-num t-green">80</span> HTTP</div>
+      <div class="port"><span class="port-num t-pink">110</span> POP3</div>
+      <div class="port"><span class="port-num t-indigo">143</span> IMAP</div>
+      <div class="port"><span class="port-num t-blue">443</span> HTTPS</div>
+    </div>
+    <div class="trick"><b>🧠 Port trick — "Friendly Telnet Sends Data Pretty Happily"</b><br>
+    FTP=21 · Telnet=23 · SMTP=25 · DNS=53 · POP3=110 · HTTP=80</div>
+
+    <h3>Client-Server Paradigm</h3>
+    <div class="g2">
+      <div class="pcard">
+        <div class="ptitle">🖥️ Server</div>
+        <ul style="font-size:12px">
+          <li>Always-on, fixed IP address</li>
+          <li>Listens on a <b>well-known port</b></li>
+          <li>Serves multiple clients simultaneously</li>
+          <li>Passive — waits for requests</li>
+          <li>Example: Web server (port 80)</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="ptitle">💻 Client</div>
+        <ul style="font-size:12px">
+          <li>Communicates with server when needed</li>
+          <li>May have dynamic IP address</li>
+          <li>Uses <b>ephemeral port</b> (assigned by OS)</li>
+          <li>Active — initiates connection</li>
+          <li>Example: Browser requesting a page</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Connectionless vs Connection-Oriented</h3>
+    <table>
+      <tr><th>Feature</th><th>Connectionless (UDP)</th><th>Connection-Oriented (TCP)</th></tr>
+      <tr><td>Setup</td><td>No handshake needed</td><td>3-way handshake required</td></tr>
+      <tr><td>Reliability</td><td>Unreliable</td><td>Reliable (ACK, retransmit)</td></tr>
+      <tr><td>Ordering</td><td>No ordering guaranteed</td><td>In-order delivery guaranteed</td></tr>
+      <tr><td>Speed</td><td>Faster (less overhead)</td><td>Slower (more overhead)</td></tr>
+      <tr><td>Flow control</td><td>No</td><td>Yes (sliding window)</td></tr>
+      <tr><td>Congestion control</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Use case</td><td>Video, DNS, VoIP, DHCP</td><td>Web, Email, File transfer</td></tr>
+    </table>
+    <div class="trick"><b>🧠 UDP = "Uncle Doesn't Promise"</b> (fast, no guarantee) &nbsp;·&nbsp; <b>TCP = "Takes Care Precisely"</b> (slow, reliable)</div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 2 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-purple">02</span> UDP — User Datagram Protocol</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <p>UDP is a <b>connectionless, unreliable</b> transport protocol providing process-to-process communication with minimum overhead. Defined in <b>RFC 768</b>.</p>
+    <div class="trick"><b>🧠 UDP = "Uncle Doesn't Promise" — no delivery guarantee, no ordering, no error recovery</b></div>
+
+    <h3>UDP Header (8 bytes — Fixed)</h3>
+    <div class="g4" style="margin:.5rem 0">
+      <div class="hf" style="background:#E6F1FB;color:#0C447C">Source Port<br><span style="font-size:10px">16 bits</span></div>
+      <div class="hf" style="background:#EAF3DE;color:#27500A">Dest Port<br><span style="font-size:10px">16 bits</span></div>
+      <div class="hf" style="background:#FAEEDA;color:#633806">Length<br><span style="font-size:10px">16 bits</span></div>
+      <div class="hf" style="background:#FAECE7;color:#712B13">Checksum<br><span style="font-size:10px">16 bits</span></div>
+    </div>
+    <div class="formula">UDP Header = 8 bytes (fixed) · Length = Header + Data (minimum value = 8)</div>
+
+    <div class="g2">
+      <div>
+        <h4>Features:</h4>
+        <ul style="font-size:12px">
+          <li>No connection setup / teardown</li>
+          <li>No ACK — fire and forget</li>
+          <li>No flow or congestion control</li>
+          <li>Supports broadcast and multicast</li>
+          <li>Very low latency</li>
+          <li>Optional checksum (detection only)</li>
+        </ul>
+      </div>
+      <div>
+        <h4>When to use UDP:</h4>
+        <ul style="font-size:12px">
+          <li>Real-time apps (VoIP, video calls)</li>
+          <li>Live streaming</li>
+          <li>DNS queries (small and fast)</li>
+          <li>DHCP, SNMP, TFTP, RIP</li>
+          <li>Online gaming</li>
+          <li>App handles its own reliability</li>
+        </ul>
+      </div>
+    </div>
+    <div class="warn"><b>⚠️ UDP header is only 8 bytes. TCP header is minimum 20 bytes. Very common exam question.</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 3 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-teal">03</span> TCP — Transmission Control Protocol &amp; Flow Control</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <p>TCP is a <b>connection-oriented, reliable, full-duplex</b> protocol. Defined in <b>RFC 793</b>. Provides byte-stream service.</p>
+    <div class="trick"><b>🧠 TCP = "Totally Controlled Pipeline"</b> — reliable, ordered, error-checked with flow &amp; congestion control</div>
+
+    <h3>TCP Header (Minimum 20 bytes)</h3>
+    <div class="tcp-grid">
+      <div class="hf" style="background:#E6F1FB;color:#0C447C">Source Port (16 bits)</div>
+      <div class="hf" style="background:#EAF3DE;color:#27500A">Destination Port (16 bits)</div>
+      <div class="hf" style="background:#FAEEDA;color:#633806;grid-column:1/-1">Sequence Number (32 bits)</div>
+      <div class="hf" style="background:#EEEDFE;color:#3C3489;grid-column:1/-1">Acknowledgement Number (32 bits)</div>
+      <div class="hf" style="background:#FAECE7;color:#712B13">HLEN(4) · Reserved(6) · Flags(6)</div>
+      <div class="hf" style="background:#E1F5EE;color:#085041">Window Size (16 bits)</div>
+      <div class="hf" style="background:#FCEBEB;color:#791F1F">Checksum (16 bits)</div>
+      <div class="hf" style="background:#F1EFE8;color:#444441">Urgent Pointer (16 bits)</div>
+      <div class="hf" style="background:#FBEAF0;color:#72243E;grid-column:1/-1">Options (variable) + Padding</div>
+    </div>
+    <div class="info"><b>TCP Flags (6 bits):</b> URG · ACK · PSH · RST · SYN · FIN<br>
+    <b>Memory trick:</b> "<b>U</b>ntil <b>A</b>mazing <b>P</b>eople <b>R</b>emember <b>S</b>ending <b>F</b>orms"</div>
+
+    <h3>TCP 3-Way Handshake (Connection Setup)</h3>
+    <div class="flow">
+      <div class="fstep">
+        <div class="fbox" style="background:#EAF3DE;color:#27500A">Client</div>
+        <div class="farrow">──── SYN (seq=x) ────→</div>
+        <div class="fbox" style="background:#E6F1FB;color:#0C447C">Server</div>
+      </div>
+      <div class="fstep">
+        <div class="fbox" style="background:#EAF3DE;color:#27500A">Client</div>
+        <div class="farrow">←── SYN+ACK (seq=y, ack=x+1) ──</div>
+        <div class="fbox" style="background:#E6F1FB;color:#0C447C">Server</div>
+      </div>
+      <div class="fstep">
+        <div class="fbox" style="background:#EAF3DE;color:#27500A">Client</div>
+        <div class="farrow">──── ACK (ack=y+1) ────→</div>
+        <div class="fbox" style="background:#E6F1FB;color:#0C447C">Server</div>
+      </div>
+    </div>
+    <div class="trick"><b>🧠 3-way handshake: SYN → SYN-ACK → ACK</b><br>
+    Like a phone call: "Hello?" → "Hello, who's there?" → "It's me, let's talk!"</div>
+
+    <h3>TCP 4-Way Termination (Connection Teardown)</h3>
+    <div style="font-size:12px;background:var(--bg-secondary);padding:.6rem .8rem;border-radius:var(--radius-md);line-height:2">
+      Client → <b style="color:#0C447C">FIN</b> → Server &nbsp;|&nbsp;
+      Server → <b style="color:#27500A">ACK</b> → Client &nbsp;|&nbsp;
+      Server → <b style="color:#633806">FIN</b> → Client &nbsp;|&nbsp;
+      Client → <b style="color:#712B13">ACK</b> → Server
+    </div>
+    <p style="font-size:12px;color:var(--text-secondary);margin-top:4px">4 steps because each direction closes independently. Client enters <b>TIME_WAIT</b> state (2×MSL) after final ACK.</p>
+
+    <h3>TCP Flow Control — Sliding Window</h3>
+    <div class="formula">Sender can send: min(cwnd, rwnd) bytes without waiting for ACK</div>
+    <div class="g2">
+      <div class="card">
+        <div class="lbl">rwnd (Receive Window)</div>
+        <p style="font-size:12px">Advertised by <b>receiver</b> in TCP header. Based on available buffer space. Prevents receiver overflow.</p>
+      </div>
+      <div class="card">
+        <div class="lbl">cwnd (Congestion Window)</div>
+        <p style="font-size:12px">Maintained by <b>sender</b>. Based on network congestion. Controlled by slow start &amp; congestion avoidance.</p>
+      </div>
+    </div>
+    <div class="trick"><b>🧠 Flow Control vs Congestion Control:</b><br>
+    Flow = <b>Receiver</b> tells sender to slow down (buffer problem)<br>
+    Congestion = <b>Network</b> tells sender to slow down (router queue problem)</div>
+
+    <h3>TCP Congestion Control Phases</h3>
+    <div class="g3">
+      <div class="pcard" style="border-left:3px solid #378ADD">
+        <div class="ptitle" style="color:#0C447C">1. Slow Start</div>
+        <ul style="font-size:12px"><li>cwnd starts at 1 MSS</li><li>Doubles every RTT (exponential)</li><li>Until cwnd ≥ ssthresh</li></ul>
+      </div>
+      <div class="pcard" style="border-left:3px solid #1D9E75">
+        <div class="ptitle" style="color:#085041">2. Congestion Avoidance</div>
+        <ul style="font-size:12px"><li>cwnd increases +1 per RTT (linear)</li><li>After cwnd hits ssthresh</li><li>Until timeout or 3 dup ACKs</li></ul>
+      </div>
+      <div class="pcard" style="border-left:3px solid #BA7517">
+        <div class="ptitle" style="color:#633806">3. Fast Retransmit</div>
+        <ul style="font-size:12px"><li>3 duplicate ACKs → loss detected</li><li>ssthresh = cwnd/2</li><li>cwnd = ssthresh (TCP Reno)</li></ul>
+      </div>
+    </div>
+
+    <h3>TCP vs UDP Summary</h3>
+    <table>
+      <tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Connection</td><td>Connection-oriented</td><td>Connectionless</td></tr>
+      <tr><td>Reliability</td><td>Reliable (ACK)</td><td>Unreliable</td></tr>
+      <tr><td>Header size</td><td>20–60 bytes</td><td>8 bytes (fixed)</td></tr>
+      <tr><td>Flow control</td><td>Yes (sliding window)</td><td>No</td></tr>
+      <tr><td>Ordering</td><td>Yes (seq numbers)</td><td>No</td></tr>
+      <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+      <tr><td>Protocols</td><td>HTTP, FTP, SMTP, SSH</td><td>DNS, DHCP, VoIP, SNMP</td></tr>
+    </table>
+    <div class="warn"><b>⚠️ TCP header min = 20 bytes · UDP header = exactly 8 bytes (always fixed)</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 4 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-amber">04</span> FTP — File Transfer Protocol</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <div class="info"><b>FTP</b> transfers files between client and server. Uses <b>two separate TCP connections</b>. Defined in RFC 959. Works at Application Layer.</div>
+    <div class="trick"><b>🧠 "21 Controls, 20 Delivers"</b> → Port 21 = Control (commands) · Port 20 = Data (file transfer)</div>
+
+    <div class="g2">
+      <div class="pcard" style="border-left:3px solid #7F77DD">
+        <div class="ptitle" style="color:#3C3489">📋 Control Connection — Port 21</div>
+        <ul style="font-size:12px">
+          <li>Always open (persistent throughout session)</li>
+          <li>Sends commands: USER, PASS, LIST, RETR, STOR</li>
+          <li>Uses ASCII text commands</li>
+          <li>Also called "command channel"</li>
+        </ul>
+      </div>
+      <div class="pcard" style="border-left:3px solid #378ADD">
+        <div class="ptitle" style="color:#0C447C">📁 Data Connection — Port 20</div>
+        <ul style="font-size:12px">
+          <li>Opens only when transferring files</li>
+          <li>Closes after each file transfer</li>
+          <li>ASCII mode (text) or Binary mode</li>
+          <li>Also called "data channel"</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Active vs Passive FTP</h3>
+    <table>
+      <tr><th>Feature</th><th>Active Mode</th><th>Passive Mode</th></tr>
+      <tr><td>Who opens data connection?</td><td>Server connects to client</td><td>Client connects to server</td></tr>
+      <tr><td>Server data port</td><td>Port 20</td><td>Random high port (&gt;1023)</td></tr>
+      <tr><td>Firewall friendly?</td><td>No (server initiates inbound)</td><td>Yes (client initiates both)</td></tr>
+      <tr><td>Common use</td><td>Legacy systems</td><td>Modern internet (preferred)</td></tr>
+    </table>
+
+    <div class="g2">
+      <div class="card">
+        <div class="lbl">FTP Variants</div>
+        <ul style="font-size:12px;padding-left:1rem">
+          <li><b>FTPS:</b> FTP + SSL/TLS (secure)</li>
+          <li><b>SFTP:</b> SSH File Transfer Protocol</li>
+          <li><b>TFTP:</b> Trivial FTP — UDP, no auth, simpler</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl">FTP Features</div>
+        <ul style="font-size:12px;padding-left:1rem">
+          <li>Anonymous FTP (no login needed)</li>
+          <li>File types: ASCII, Binary</li>
+          <li>Commands: USER, PASS, RETR, STOR, LIST, QUIT</li>
+        </ul>
+      </div>
+    </div>
+    <div class="warn"><b>⚠️ FTP sends credentials in plaintext → NOT secure. SFTP/FTPS used in modern secure environments.</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 5 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-coral">05</span> SMTP — Simple Mail Transfer Protocol</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <div class="info"><b>SMTP</b> is used to <b>send</b> emails between mail servers and from client to server. Port <b>25</b> (server-to-server) or <b>587</b> (client-to-server). Uses TCP.</div>
+    <div class="trick"><b>🧠 SMTP = "Send Mail To People"</b> — only for SENDING.<br>
+    Receiving uses POP3 (port 110) or IMAP (port 143).</div>
+
+    <h3>Email System Flow</h3>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:.5rem 0;font-size:12px">
+      <div class="fbox" style="background:#EAF3DE;color:#27500A">Sender's Mail Client</div>
+      <span style="color:var(--text-secondary)">→ SMTP →</span>
+      <div class="fbox" style="background:#E6F1FB;color:#0C447C">Sender's Mail Server</div>
+      <span style="color:var(--text-secondary)">→ SMTP →</span>
+      <div class="fbox" style="background:#FAEEDA;color:#633806">Receiver's Mail Server</div>
+      <span style="color:var(--text-secondary)">→ POP3/IMAP →</span>
+      <div class="fbox" style="background:#EEEDFE;color:#3C3489">Receiver's Client</div>
+    </div>
+
+    <div class="g2">
+      <div>
+        <h4>SMTP Key Characteristics:</h4>
+        <ul style="font-size:12px">
+          <li>Push protocol — sender pushes mail to server</li>
+          <li>Uses TCP (reliable delivery)</li>
+          <li>Originally 7-bit ASCII text only</li>
+          <li>MIME adds binary/multimedia support</li>
+          <li>Commands: HELO, MAIL FROM, RCPT TO, DATA, QUIT</li>
+          <li>Codes: 220 Ready · 250 OK · 354 Start · 550 Unknown user</li>
+        </ul>
+      </div>
+      <div>
+        <h4>SMTP vs POP3 vs IMAP</h4>
+        <table style="margin:0">
+          <tr><th></th><th>SMTP</th><th>POP3</th><th>IMAP</th></tr>
+          <tr><td>Purpose</td><td>Send</td><td>Retrieve</td><td>Access</td></tr>
+          <tr><td>Port</td><td>25/587</td><td>110</td><td>143</td></tr>
+          <tr><td>Mail stored</td><td>Server</td><td>Local</td><td>Server</td></tr>
+          <tr><td>Multi-device</td><td>—</td><td>No</td><td>Yes</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:.5rem">
+      <div class="lbl">MIME — Multipurpose Internet Mail Extensions</div>
+      <p style="font-size:12px">Extends SMTP to support non-ASCII: images, audio, video, HTML in emails. Adds Content-Type and Content-Transfer-Encoding headers.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 6 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-green">06</span> Telnet — Remote Login Protocol</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <div class="info"><b>Telnet</b> (TELecommunication NETwork) allows a user to log into a remote computer and use it as if sitting locally. Port <b>23</b>, uses TCP.</div>
+    <div class="trick"><b>🧠 Telnet = "Type Everywhere, Login Network"</b> — remote terminal access over network. The original SSH (but insecure).</div>
+
+    <div class="g2">
+      <div class="pcard">
+        <div class="ptitle">⚙️ How Telnet Works</div>
+        <ul style="font-size:12px">
+          <li>Client connects to server on port 23</li>
+          <li>Server presents login prompt</li>
+          <li>User types commands → sent to remote machine</li>
+          <li>Remote machine executes → sends output back</li>
+          <li>Uses <b>NVT</b> (Network Virtual Terminal) concept</li>
+          <li>NVT = standard character representation for transmission</li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="ptitle">⚠️ Limitations</div>
+        <ul style="font-size:12px">
+          <li>Sends all data as <b>plain text — no encryption</b></li>
+          <li>Username &amp; password visible on network</li>
+          <li>Vulnerable to eavesdropping/sniffing</li>
+          <li>Replaced by <b>SSH (Secure Shell)</b> on port 22</li>
+          <li>Still used for testing/debugging network devices</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Telnet Options Negotiation</h3>
+    <p style="font-size:13px">Client and server negotiate capabilities using 4 commands:</p>
+    <div class="g4">
+      <div class="card"><div class="lbl">WILL</div><p style="font-size:12px">Sender wants to enable option</p></div>
+      <div class="card"><div class="lbl">WONT</div><p style="font-size:12px">Sender refuses to enable option</p></div>
+      <div class="card"><div class="lbl">DO</div><p style="font-size:12px">Sender wants receiver to enable</p></div>
+      <div class="card"><div class="lbl">DONT</div><p style="font-size:12px">Sender wants receiver to disable</p></div>
+    </div>
+    <div class="warn"><b>⚠️ Telnet = insecure (plain text). SSH = secure (encrypted). In exams: Telnet = "insecure remote login".</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 7 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-pink">07</span> WWW, HTTP &amp; URL</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <h3>WWW — World Wide Web</h3>
+    <p>A system of interlinked hypertext documents accessed via the Internet. Created by <b>Tim Berners-Lee in 1989</b> at CERN. NOT the same as the Internet.</p>
+    <div class="g3">
+      <div class="card"><div class="lbl">HTML</div><p style="font-size:12px">HyperText Markup Language — structure &amp; content of web pages</p></div>
+      <div class="card"><div class="lbl">HTTP</div><p style="font-size:12px">HyperText Transfer Protocol — how browsers &amp; servers communicate</p></div>
+      <div class="card"><div class="lbl">URL</div><p style="font-size:12px">Uniform Resource Locator — address of a resource on the web</p></div>
+    </div>
+    <div class="trick"><b>🧠 WWW ≠ Internet:</b> Internet = physical infrastructure (cables, routers) · WWW = one service running ON the internet</div>
+
+    <hr class="dv">
+    <div class="info"><b>HTTP</b> is a <b>stateless, application-layer</b> protocol for transferring web pages. Port <b>80</b> (HTTP) / Port <b>443</b> (HTTPS). Uses TCP.</div>
+
+    <h3>HTTP Request Methods</h3>
+    <div class="g3">
+      <div class="card" style="border-top:2px solid #378ADD"><div class="lbl">GET</div><p style="font-size:12px">Retrieve data. Parameters in URL. Safe &amp; idempotent.</p></div>
+      <div class="card" style="border-top:2px solid #1D9E75"><div class="lbl">POST</div><p style="font-size:12px">Send data. Body payload. Forms, login. NOT idempotent.</p></div>
+      <div class="card" style="border-top:2px solid #BA7517"><div class="lbl">PUT</div><p style="font-size:12px">Update resource entirely. Idempotent.</p></div>
+      <div class="card" style="border-top:2px solid #E24B4A"><div class="lbl">DELETE</div><p style="font-size:12px">Remove a resource. Idempotent.</p></div>
+      <div class="card" style="border-top:2px solid #7F77DD"><div class="lbl">HEAD</div><p style="font-size:12px">Like GET but headers only, no body.</p></div>
+      <div class="card" style="border-top:2px solid #D4537E"><div class="lbl">OPTIONS</div><p style="font-size:12px">Ask server which methods are supported.</p></div>
+    </div>
+
+    <h3>HTTP Response Codes</h3>
+    <table>
+      <tr><th>Code</th><th>Meaning</th><th>Common Examples</th></tr>
+      <tr><td>1xx</td><td>Informational</td><td>100 Continue</td></tr>
+      <tr><td>2xx</td><td>Success</td><td>200 OK · 201 Created · 204 No Content</td></tr>
+      <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently · 304 Not Modified</td></tr>
+      <tr><td>4xx</td><td>Client Error</td><td>400 Bad Request · 401 Unauthorized · 403 Forbidden · <b>404 Not Found</b></td></tr>
+      <tr><td>5xx</td><td>Server Error</td><td>500 Internal Server Error · 503 Service Unavailable</td></tr>
+    </table>
+    <div class="trick"><b>🧠 "I Successfully Redirected, Client got Server error"</b><br>
+    1=Info · 2=Success · 3=Redirect · 4=Client error · 5=Server error</div>
+
+    <h3>HTTP Versions</h3>
+    <table>
+      <tr><th>Version</th><th>Key Feature</th><th>Connection</th></tr>
+      <tr><td>HTTP/1.0</td><td>One request per connection</td><td>Non-persistent</td></tr>
+      <tr><td>HTTP/1.1</td><td>Persistent connections, pipelining, Host header</td><td>Persistent (default)</td></tr>
+      <tr><td>HTTP/2</td><td>Multiplexing, binary framing, header compression (HPACK)</td><td>Persistent + multiplexed</td></tr>
+      <tr><td>HTTP/3</td><td>Uses QUIC (UDP-based), faster</td><td>QUIC (UDP)</td></tr>
+    </table>
+    <div class="warn"><b>⚠️ HTTP is stateless</b> — server has no memory of previous requests. Cookies/sessions add state on top of HTTP.</div>
+
+    <hr class="dv">
+    <h3>URL — Uniform Resource Locator</h3>
+    <div class="url-box">
+      <span style="color:#0C447C;font-weight:600">https</span><span style="color:var(--text-secondary)">://</span><span style="color:#27500A;font-weight:600">www.example.com</span><span style="color:var(--text-secondary)">:</span><span style="color:#712B13;font-weight:600">443</span><span style="color:#633806;font-weight:600">/path/page.html</span><span style="color:var(--text-secondary)">?</span><span style="color:#3C3489;font-weight:600">query=value</span><span style="color:var(--text-secondary)">#</span><span style="color:#72243E;font-weight:600">section</span>
+    </div>
+    <div class="g3">
+      <div class="card"><div class="lbl" style="color:#0C447C">Protocol/Scheme</div><p style="font-size:12px">https — how to access</p></div>
+      <div class="card"><div class="lbl" style="color:#27500A">Host / Domain</div><p style="font-size:12px">www.example.com — where</p></div>
+      <div class="card"><div class="lbl" style="color:#712B13">Port (optional)</div><p style="font-size:12px">443 — default per scheme</p></div>
+      <div class="card"><div class="lbl" style="color:#633806">Path</div><p style="font-size:12px">/path/page.html — specific resource</p></div>
+      <div class="card"><div class="lbl" style="color:#3C3489">Query String</div><p style="font-size:12px">?query=value — parameters</p></div>
+      <div class="card"><div class="lbl" style="color:#72243E">Fragment</div><p style="font-size:12px">#section — anchor within page</p></div>
+    </div>
+    <div class="trick"><b>🧠 "Pretty Horses Dance Paths Quietly Forever"</b><br>
+    Protocol · Host · Domain · Path · Query · Fragment</div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 8 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-indigo">08</span> DNS — Domain Name System</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <div class="info"><b>DNS</b> translates domain names (www.google.com) → IP addresses (142.250.190.4). Port <b>53</b>. Uses <b>UDP</b> for queries and <b>TCP</b> for zone transfers.</div>
+    <div class="trick"><b>🧠 DNS = "Domain Name to IP System"</b> — the phonebook of the Internet.<br>You know the name, DNS finds the number (IP address).</div>
+
+    <h3>DNS Hierarchy (Inverted Tree)</h3>
+    <div class="dns-tree">                . (Root)
+         ┌──────┼──────┐
+        .com  .org   .in     ← Top Level Domain (TLD)
+         ┌────┘
+      google.com             ← Second Level Domain
+         ┌────┘
+      www.google.com         ← Subdomain / FQDN</div>
+
+    <div class="g2">
+      <div>
+        <h4>Types of DNS Servers:</h4>
+        <ul style="font-size:12px">
+          <li><b>Root Name Server:</b> Top of hierarchy. 13 sets (A–M). Knows all TLD servers.</li>
+          <li><b>TLD Name Server:</b> Handles .com, .org, .in etc. Knows authoritative servers.</li>
+          <li><b>Authoritative Name Server:</b> Has actual DNS records. Final answer.</li>
+          <li><b>Recursive Resolver:</b> ISP's DNS. Does all the work on your behalf.</li>
+          <li><b>Local DNS Cache:</b> Browser and OS cache DNS for speed.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>DNS Record Types:</h4>
+        <table style="margin:0">
+          <tr><th>Record</th><th>Purpose</th></tr>
+          <tr><td>A</td><td>Domain → IPv4 address</td></tr>
+          <tr><td>AAAA</td><td>Domain → IPv6 address</td></tr>
+          <tr><td>MX</td><td>Mail Exchange server</td></tr>
+          <tr><td>CNAME</td><td>Alias → canonical name</td></tr>
+          <tr><td>NS</td><td>Name Server record</td></tr>
+          <tr><td>PTR</td><td>IP → domain (reverse lookup)</td></tr>
+          <tr><td>TXT</td><td>Text info (SPF, DKIM)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3>DNS Resolution Process</h3>
+    <div style="font-size:12px;line-height:2;background:var(--bg-secondary);padding:.6rem .8rem;border-radius:var(--radius-md)">
+      1. Browser checks <b>local cache</b> → found? Done!<br>
+      2. Query sent to <b>Local DNS Resolver</b> (ISP / recursive)<br>
+      3. Resolver checks its cache → found? Done!<br>
+      4. Resolver queries <b>Root Name Server</b> → returns TLD server address<br>
+      5. Resolver queries <b>TLD Name Server</b> (e.g. .com) → returns authoritative server<br>
+      6. Resolver queries <b>Authoritative Name Server</b> → returns final IP<br>
+      7. Resolver caches result → returns IP to browser<br>
+      8. Browser connects to IP → website loads
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="lbl">Recursive Query</div>
+        <p style="font-size:12px">Resolver does ALL work. Client gets final IP. Most common for client → resolver.</p>
+      </div>
+      <div class="card">
+        <div class="lbl">Iterative Query</div>
+        <p style="font-size:12px">Server returns best referral. Client queries each server itself. Used between servers.</p>
+      </div>
+    </div>
+    <div class="trick"><b>🧠 DNS resolution order — "Brave Rascals Run To Answer"</b><br>
+    Browser cache · Resolver · Root · TLD · Authoritative</div>
+    <div class="warn"><b>⚠️ DNS uses UDP port 53 for queries · TCP port 53 for zone transfers. Very common exam question.</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 9 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-red">09</span> DHCP &amp; BOOTP</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <div class="info"><b>DHCP</b> automatically assigns IP addresses and network config to devices. Server port <b>67</b>, Client port <b>68</b>. Uses <b>UDP</b>.</div>
+    <div class="trick"><b>🧠 DHCP = "Dynamic Host Configures Please"</b><br>
+    Automatically gives IP, subnet mask, gateway, DNS to any device joining the network.</div>
+
+    <h3>DHCP 4-Step Process — DORA</h3>
+    <div class="dora-row">
+      <div class="dora-box">
+        <div class="dora-label" style="background:#EEEDFE;color:#3C3489">D — Discover</div>
+        <p class="dora-desc">Client broadcasts to find DHCP server<br>(src=0.0.0.0, dst=255.255.255.255)</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:20px;color:var(--text-secondary);padding-top:8px">→</div>
+      <div class="dora-box">
+        <div class="dora-label" style="background:#EAF3DE;color:#27500A">O — Offer</div>
+        <p class="dora-desc">Server offers an IP address with lease time to client</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:20px;color:var(--text-secondary);padding-top:8px">→</div>
+      <div class="dora-box">
+        <div class="dora-label" style="background:#FAEEDA;color:#633806">R — Request</div>
+        <p class="dora-desc">Client broadcasts acceptance of offered IP address</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:20px;color:var(--text-secondary);padding-top:8px">→</div>
+      <div class="dora-box">
+        <div class="dora-label" style="background:#E6F1FB;color:#0C447C">A — Acknowledge</div>
+        <p class="dora-desc">Server confirms; client may now use the IP address</p>
+      </div>
+    </div>
+    <div class="trick"><b>🧠 "Devices Often Request Addresses" → DORA</b><br>
+    Discover · Offer · Request · Acknowledge</div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="lbl">What DHCP provides</div>
+        <ul style="font-size:12px;padding-left:1rem">
+          <li>IP address (dynamic or reserved)</li>
+          <li>Subnet mask</li>
+          <li>Default gateway</li>
+          <li>DNS server address</li>
+          <li>Lease duration</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl">DHCP Lease</div>
+        <ul style="font-size:12px;padding-left:1rem">
+          <li>IP given for limited time (lease)</li>
+          <li>Client renews at T/2 of lease time</li>
+          <li>Fails → retry at T×7/8</li>
+          <li>Expired lease → redo full DORA</li>
+          <li>Reserved IP = MAC bound to IP</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="dv">
+    <h3>BOOTP — Bootstrap Protocol</h3>
+    <div class="pcard">
+      <div class="ptitle">🥾 BOOTP (Bootstrap Protocol) — Predecessor to DHCP</div>
+      <p style="font-size:12px;margin-bottom:8px">Used to boot diskless workstations over a network. Also uses UDP ports 67/68.</p>
+      <table>
+        <tr><th>Feature</th><th>BOOTP</th><th>DHCP</th></tr>
+        <tr><td>IP assignment</td><td>Static (manual table)</td><td>Dynamic</td></tr>
+        <tr><td>Lease time</td><td>No (permanent)</td><td>Yes (temporary)</td></tr>
+        <tr><td>Config info</td><td>Limited</td><td>Full (DNS, GW etc.)</td></tr>
+        <tr><td>Diskless boot</td><td>Yes (uses TFTP)</td><td>Less focus</td></tr>
+        <tr><td>Backward compat</td><td>—</td><td>DHCP supports BOOTP</td></tr>
+        <tr><td>UDP ports</td><td>67 / 68</td><td>67 / 68 (same)</td></tr>
+      </table>
+    </div>
+    <div class="trick"><b>🧠 BOOTP = "Boot Only One Time Parameters"</b> (static, old)<br>
+    <b>DHCP</b> = Dynamic, modern, evolved from BOOTP. Backward compatible.</div>
+    <div class="warn"><b>⚠️ Both BOOTP and DHCP use UDP ports 67 (server) and 68 (client). DHCP evolved FROM BOOTP with dynamic allocation added.</b></div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 10 ═══ -->
+<div class="sec">
+  <div class="sh" onclick="tog(this)">
+    <span class="st"><span class="badge b-gray">10</span> ⚡ Quick Revision — Ports, Tricks &amp; Exam Traps</span>
+    <span class="chev">▾</span>
+  </div>
+  <div class="sb">
+    <h3>All Port Numbers Cheatsheet</h3>
+    <table>
+      <tr><th>Protocol</th><th>Port</th><th>Transport</th><th>Full Name</th></tr>
+      <tr><td>FTP Data</td><td>20</td><td>TCP</td><td>File Transfer Protocol (data)</td></tr>
+      <tr><td>FTP Control</td><td>21</td><td>TCP</td><td>File Transfer Protocol (control)</td></tr>
+      <tr><td>SSH</td><td>22</td><td>TCP</td><td>Secure Shell</td></tr>
+      <tr><td>Telnet</td><td>23</td><td>TCP</td><td>Telecommunication Network</td></tr>
+      <tr><td>SMTP</td><td>25</td><td>TCP</td><td>Simple Mail Transfer Protocol</td></tr>
+      <tr><td>DNS</td><td>53</td><td>UDP (TCP zone)</td><td>Domain Name System</td></tr>
+      <tr><td>DHCP Server</td><td>67</td><td>UDP</td><td>Dynamic Host Config Protocol</td></tr>
+      <tr><td>DHCP Client</td><td>68</td><td>UDP</td><td>Dynamic Host Config Protocol</td></tr>
+      <tr><td>HTTP</td><td>80</td><td>TCP</td><td>HyperText Transfer Protocol</td></tr>
+      <tr><td>POP3</td><td>110</td><td>TCP</td><td>Post Office Protocol v3</td></tr>
+      <tr><td>IMAP</td><td>143</td><td>TCP</td><td>Internet Message Access Protocol</td></tr>
+      <tr><td>HTTPS</td><td>443</td><td>TCP</td><td>HTTP Secure (TLS)</td></tr>
+    </table>
+
+    <h3>All Memory Tricks — Cheatsheet</h3>
+    <div style="background:var(--bg-secondary);border:0.5px solid var(--border);border-radius:var(--radius-md);padding:.75rem;font-size:12px;line-height:2.1">
+      <div>🔵 <b>Layer addresses:</b> "My Interface Port" → MAC (L2) · IP (L3) · Port (L4)</div>
+      <div>🟣 <b>Port numbers:</b> "Friendly Telnet Sends Data Pretty Happily" → FTP=21, Telnet=23, SMTP=25, DNS=53, POP3=110, HTTP=80</div>
+      <div>🟠 <b>TCP flags:</b> "Until Amazing People Remember Sending Forms" → URG·ACK·PSH·RST·SYN·FIN</div>
+      <div>🟢 <b>TCP vs UDP:</b> UDP="Uncle Doesn't Promise" · TCP="Takes Care Precisely"</div>
+      <div>🔴 <b>HTTP codes:</b> "I Successfully Redirected, Client got Server error" → 1xx·2xx·3xx·4xx·5xx</div>
+      <div>🟡 <b>DNS resolution:</b> "Brave Rascals Run To Answer" → Browser·Resolver·Root·TLD·Authoritative</div>
+      <div>🟤 <b>DHCP process:</b> "Devices Often Request Addresses" → DORA</div>
+      <div>⚫ <b>FTP ports:</b> "21 Controls, 20 Delivers"</div>
+      <div>🌐 <b>SMTP direction:</b> SMTP = PUSH (send) · POP3/IMAP = PULL (receive)</div>
+      <div>🔐 <b>Telnet vs SSH:</b> Telnet = plain text port 23 · SSH = encrypted port 22</div>
+    </div>
+
+    <h3>Top 8 Exam Traps</h3>
+    <div class="warn"><b>1.</b> UDP header = <b>8 bytes fixed</b> · TCP header = <b>minimum 20 bytes</b> (up to 60 bytes with options)</div>
+    <div class="warn"><b>2.</b> DNS uses <b>UDP</b> for queries (port 53) but <b>TCP</b> for zone transfers. Not purely UDP!</div>
+    <div class="warn"><b>3.</b> SMTP is for <b>sending</b> only. POP3/IMAP are for <b>receiving/accessing</b>. Very commonly confused.</div>
+    <div class="warn"><b>4.</b> FTP uses <b>two</b> TCP connections — port 21 (control) and port 20 (data). HTTP uses only one.</div>
+    <div class="warn"><b>5.</b> HTTP is <b>stateless</b>. Cookies/sessions are used to add state on top of HTTP.</div>
+    <div class="warn"><b>6.</b> WWW ≠ Internet. Internet = network infrastructure. WWW = one service running on it.</div>
+    <div class="warn"><b>7.</b> Telnet = insecure plain text (port 23). SSH = secure encrypted (port 22). Always distinguish.</div>
+    <div class="warn"><b>8.</b> DHCP evolved from BOOTP. Both use ports 67/68 UDP. DHCP added dynamic IPs + lease concept.</div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:1rem 0 .5rem;font-size:12px;color:var(--text-secondary)">
+  Transport &amp; Application Layer Exam Notes · All 10 Sections · Good luck! 🎯
+</div>
+
+<script>
+function tog(h) {
+  const b = h.nextElementSibling;
+  const c = h.querySelector('.chev');
+  const open = b.classList.contains('open');
+  b.classList.toggle('open', !open);
+  c.classList.toggle('open', !open);
+}
+// Open first section by default
+document.querySelectorAll('.sh')[0].click();
+</script>
+</body>
+</html>
